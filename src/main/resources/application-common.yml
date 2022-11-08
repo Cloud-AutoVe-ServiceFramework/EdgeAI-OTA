@@ -1,0 +1,27 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+props:
+
+  
+---
+ 
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+props:
+
+ 
+---
+ 
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+props:
+

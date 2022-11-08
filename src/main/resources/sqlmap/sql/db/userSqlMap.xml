@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.re.etri.advcloud.mapper.UserMapper">
+
+	<select id="select" parameterType="UserInfoVO" resultType="UserInfoVO">
+		SELECT 
+			* 
+		FROM user_info
+		<where>
+			<if test="id != null and id != ''">
+				AND id = #{id}
+			</if>
+			<if test="name != null and name != ''">
+				AND name = #{name}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="UserInfoVO">
+		INSERT INTO user_info
+		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
+			id, password, name
+		</trim>
+		VALUES
+		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
+			#{id}, #{password}, #{name} 
+		</trim>
+	</insert>
+	
+	<update id="updatePassword" parameterType="UserInfoVO">
+		UPDATE user_info
+		SET 
+			password = #{password}
+		WHERE
+			id = #{id}
+	</update>
+	
+	<update id="updateManagedCount" parameterType="UserInfoVO">
+		UPDATE user_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="manage_vehicle_count != null and manage_vehicle_count != -1">manage_vehicle_count = #{manage_vehicle_count},</if>
+			<if test="manage_edge_count != null and manage_edge_count != -1">manage_edge_count = #{manage_edge_count},</if>
+		</trim>
+		WHERE
+			id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,57 @@
+#-----------------------------------------------------------------------
+#
+#   applicaton-datasource : DB Datasource Configuation 
+#   
+#-----------------------------------------------------------------------
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    hikari:
+      driver-class-name: org.xxxdb.jdbc.Driver
+      jdbc-url: jdbc:xxxdb://xxx.xxx.xxx.xxx:3306/datamanager
+      username: xxx
+      password: xxx
+      pool-name: HikariPool
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 600000
+    
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    hikari:
+      driver-class-name: org.xxxdb.jdbc.Driver
+      jdbc-url: jdbc:xxxdb://xxx.xxx.xxx.xxx:3306/datamanager
+      username: xxx
+      password: xxx
+      pool-name: HikariPool
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 600000
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    hikari:
+      driver-class-name: org.xxxdb.jdbc.Driver
+      jdbc-url: jdbc:xxxdb://xxx.xxx.xxx.xxx:3306/datamanager
+      username: xxx
+      password: xxx
+      pool-name: HikariPool
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 600000

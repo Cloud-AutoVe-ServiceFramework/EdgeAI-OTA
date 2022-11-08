@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.re.etri.advcloud.mapper.EdgeInfoMapper">
+
+	<select id="selectList" parameterType="EdgeInfoVO" resultType="EdgeInfoVO">
+		SELECT 
+			* 
+		FROM edgesystem_info
+		<where>
+			<if test="location_number != null and location_number != ''">
+				AND location_number = #{location_number}
+			</if>
+			<if test="edge_id != null and edge_id != ''">
+				AND edge_id = #{edge_id}
+			</if>
+			<if test="user_info_id != null and user_info_id != ''">
+				AND user_info_id = #{user_info_id}
+			</if>
+			<if test="edgesw_package_id != null and edgesw_package_id != ''">
+				AND edgesw_package_id = #{edgesw_package_id}
+			</if>
+			<if test="loc_latitude != null and loc_latitude != ''">
+				AND loc_latitude = #{loc_latitude}
+			</if>
+			<if test="loc_longitude != null and loc_longitude != ''">
+				AND loc_longitude = #{loc_longitude}
+			</if>	
+		</where>
+	</select>
+	
+	<select id="select" parameterType="EdgeInfoVO" resultType="EdgeInfoVO">
+		SELECT 
+			* 
+		FROM edgesystem_info
+		where
+			edge_id = #{edge_id}
+	</select>
+	
+	<insert id="insert" parameterType="EdgeInfoVO">
+		INSERT INTO edgesystem_info
+		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
+			location_number, edge_id, user_info_id, edgesw_package_id, loc_latitude, loc_longitude
+		</trim>
+		VALUES
+		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
+			#{location_number}, #{edge_id}, #{user_info_id}, #{edgesw_package_id}, #{loc_latitude}, #{loc_longitude} 
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="EdgeInfoVO">
+		UPDATE edgesystem_info
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="location_number != null and location_number != ''">location_number = #{location_number},</if>
+			<if test="user_info_id != null and user_info_id != ''">user_info_id = #{user_info_id},</if>
+			<if test="edgesw_package_id != null and edgesw_package_id != ''">edgesw_package_id = #{edgesw_package_id},</if>
+			<if test="loc_latitude != null and loc_latitude != ''">loc_latitude = #{loc_latitude},</if>
+			<if test="loc_longitude != null and loc_longitude != ''">loc_longitude = #{loc_longitude},</if>
+		</trim>
+		WHERE
+			edge_id = #{edge_id}
+	</update>
+	
+	<delete id="delete" parameterType="String">
+		DELETE FROM edgesystem_info WHERE edge_id = #{edge_id}
+	</delete>
+	
+</mapper>

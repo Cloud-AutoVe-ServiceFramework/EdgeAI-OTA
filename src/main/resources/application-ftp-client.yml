@@ -1,0 +1,51 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+
+ftp:
+  client:
+    protocol: ftp
+    port: 21
+    host: xxx.xxx.xxx.xxx
+    username: xxxx
+    password: xxxx
+    keepAliveTimeout: 10
+    edgeSwPath: files/edge_sw
+  
+---
+ 
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+ftp:
+  client:
+    protocol: ftp
+    port: 21
+    host: xxx.xxx.xxx.xxx
+    username: xxxx
+    password: texxxxst
+    keepAliveTimeout: 10
+    edgeSwPath: files/edge_sw
+
+ 
+---
+ 
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+ftp:
+  client:
+    protocol: ftp
+    port: 21
+    host: xxx.xxx.xxx.xxx
+    username: xxxx
+    password: xxxx
+    keepAliveTimeout: 10
+    edgeSwPath: files/edge_sw
+

@@ -1,0 +1,85 @@
+#logging:
+#  pattern:
+#    console: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+#    file: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+logging:
+  file: 
+    # path: logs
+    name: logs/edge_manager.log
+    max-history: 10
+    max-size: 100MB
+  exception-conversion-word: '%wEx'
+  register-shutdown-hook: false
+  level:
+    root: info
+    '[kr.re.etri.advcloud]': debug
+    '[org.springframework.jdbc.datasource]': debug
+    '[org.springframework.test]': info
+  pattern:
+#    console: '%-5p,[%d{yyyy-MM-dd HH:mm:ss.SSS}] %C:%M:%L - %m%n'
+#    console: '%d %-5level %logger : %msg%n'
+    console: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+    file: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+   
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+  
+logging:
+  file: 
+    # path: logs
+    name: logs/edge_manager.log
+    max-history: 10
+    max-size: 100MB
+  exception-conversion-word: '%wEx'
+  register-shutdown-hook: false
+  level:
+    root: info
+    '[kr.re.etri.advcloud]': debug
+    '[org.springframework.jdbc.datasource]': debug
+    '[org.springframework.test]': info
+  pattern:
+#    console: '%-5p,[%d{yyyy-MM-dd HH:mm:ss.SSS}] %C:%M:%L - %m%n'
+#    console: '%d %-5level %logger : %msg%n'
+    console: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+    file: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  
+logging:
+  file: 
+    # path: logs
+    name: logs/edge_manager.log
+    max-history: 10
+    max-size: 100MB
+  exception-conversion-word: '%wEx'
+  register-shutdown-hook: false
+  level:
+    root: info
+    '[kr.re.etri.advcloud]': info
+    '[org.springframework.jdbc.datasource]': debug
+    '[org.springframework.test]': info
+  pattern:
+    console: '%clr(%d{yyyy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(${PID}){faint} %clr(---){faint} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(:){red} %clr(%m){faint}%n'
+    file: '%-5p,[%d{yyyy-MM-dd HH:mm:ss.SSS}] %C:%M:%L - %m%n'
+    
+    
+
+    

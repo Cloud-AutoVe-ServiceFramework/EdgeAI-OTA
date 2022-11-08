@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.re.etri.advcloud.mapper.EdgeSWMapper">
+
+	<sql id="selection">
+		<where>
+			<if test="sw_serial != null and sw_serial != -1">
+				AND sw_serial = #{sw_serial}
+			</if>
+			<if test="sw_group != null and sw_group != -1">
+				AND sw_group = #{sw_group}
+			</if>
+			<if test="sw_type != null and sw_type != -1">
+				AND sw_type = #{sw_type}
+			</if>
+			<if test="sw_manufacturer != null and sw_manufacturer != ''">
+				AND sw_manufacturer LIKE CONCAT('%',#{sw_manufacturer},'%')
+			</if>
+			<if test="package_id != null and package_id != ''">
+				AND package_id LIKE CONCAT('%',#{package_id},'%')
+			</if>
+			<if test="sw_id != null and sw_id != ''">
+				AND sw_id LIKE CONCAT('%',#{sw_id},'%')
+			</if>
+			<if test="sw_version != null and sw_version != ''">
+				AND sw_version LIKE CONCAT('%',#{sw_version},'%')
+			</if>
+			<if test="sw_name != null and sw_name != ''">
+				AND sw_name LIKE CONCAT('%',#{sw_name},'%')
+			</if>	
+			<if test="file_type != null and file_type != ''">
+				AND file_type LIKE CONCAT('%',#{file_type},'%')
+			</if>	
+			<if test="file_name != null and file_name != ''">
+				AND file_name LIKE CONCAT('%',#{file_name},'%')
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectList" parameterType="EdgeSWVO" resultType="EdgeSWVO">
+		<choose>
+			<when test="newest_version != null and newest_version == true">
+				SELECT A.* FROM (
+					SELECT 
+						sw_serial, 
+						(select c.codeval from code c where c.codegrp = 'sw_group' AND  c.code = sw_group) as sw_group_name,
+						(select c.codeval from code c where c.codegrp = 'sw_type' AND  c.code = sw_type) as sw_type_name, 
+						sw_manufacturer, 
+						package_id, 
+						sw_id, 
+						sw_version, 
+						sw_name, 
+						archive_type,
+						file_type, 
+						file_name, 
+						DATE_FORMAT(creation_datetime,'%Y/%m/%d %H:%i:%s') as creation_datetime,
+						file_size,
+						install_location,
+						file_location
+					FROM edge_softwares
+					<include refid="selection"></include>
+					ORDER BY sw_version DESC LIMIT 10000
+				) A GROUP BY A.sw_id
+			</when>
+			
+			<otherwise>
+				SELECT 
+					sw_serial, 
+					(select c.codeval from code c where c.codegrp = 'sw_group' AND  c.code = sw_group) as sw_group_name,
+					(select c.codeval from code c where c.codegrp = 'sw_type' AND  c.code = sw_type) as sw_type_name, 
+					sw_manufacturer, 
+					package_id, 
+					sw_id, 
+					sw_version, 
+					sw_name, 
+					archive_type,
+					file_type, 
+					file_name, 
+					DATE_FORMAT(creation_datetime,'%Y/%m/%d %H:%i:%s') as creation_datetime,
+					file_size,
+					install_location,
+					file_location
+				FROM edge_softwares
+				<include refid="selection"></include>
+			</otherwise>	
+		</choose>
+	</select>
+	
+	<select id="selectDownloadList" parameterType="EdgeSWVO" resultType="EdgeSWVO">
+		SELECT
+			sw_serial,
+			file_name,
+			file_location,
+			install_location
+		FROM edge_softwares
+		<where>
+			<if test="sw_serial != null and sw_serial != -1">
+				AND sw_serial = #{sw_serial}
+			</if>
+			<if test="sw_group != null and sw_group != -1">
+				AND sw_group = #{sw_group}
+			</if>
+			<if test="sw_type != null and sw_type != -1">
+				AND sw_type = #{sw_type}
+			</if>
+			<if test="sw_manufacturer != null and sw_manufacturer != ''">
+				AND sw_manufacturer = #{sw_manufacturer}
+			</if>
+			<if test="package_id != null and package_id != ''">
+				AND package_id = #{package_id}
+			</if>
+			<if test="sw_id != null and sw_id != ''">
+				AND sw_id = #{sw_id}
+			</if>
+			<if test="sw_version != null and sw_version != ''">
+				AND sw_version <![CDATA[>=]]> #{sw_version}
+			</if>
+			<if test="sw_name != null and sw_name != ''">
+				AND sw_name = #{sw_name}
+			</if>	
+			<if test="file_type != null and file_type != ''">
+				AND file_type = #{file_type}
+			</if>	
+			<if test="file_name != null and file_name != ''">
+				AND file_name = #{file_name}
+			</if>
+			<if test="creation_datetime != null and creation_datetime != ''">
+				AND creation_datetime <![CDATA[>=]]> #{creation_datetime}
+			</if>
+			<if test="sw_serial_list != null and sw_serial_list != ''">
+				AND sw_serial IN (${sw_serial_list})
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectDuplicateRow" parameterType="EdgeSWVO" resultType="EdgeSWVO">
+		SELECT 
+			* 
+		FROM edge_softwares
+		where
+			sw_group = #{sw_group} AND sw_type = #{sw_type} AND sw_manufacturer = #{sw_manufacturer} AND package_id = #{package_id} AND sw_id = #{sw_id} 
+			AND sw_version = #{sw_version} AND sw_name = #{sw_name} AND file_type = #{file_type} AND file_name = #{file_name} AND creation_datetime = #{creation_datetime}
+			AND file_size = #{file_size} AND install_location = #{install_location}
+			<if test="sw_serial != null and sw_serial != ''">
+				AND sw_serial != #{sw_serial}
+			</if>	
+	</select>
+	
+	<select id="selectById" parameterType="int" resultType="EdgeSWVO">
+		SELECT 
+			* 
+		FROM edge_softwares
+		where
+			sw_serial = #{sw_serial}
+	</select>
+	
+	<insert id="insert" parameterType="EdgeSWVO">
+		INSERT INTO edge_softwares
+		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
+			sw_group, sw_type, sw_manufacturer, package_id, sw_id, sw_version, sw_name, archive_type, file_type, file_name, creation_datetime, file_size, file_location, install_location
+		</trim>
+		VALUES
+		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
+			#{sw_group}, #{sw_type}, #{sw_manufacturer}, #{package_id}, #{sw_id}, #{sw_version}, #{sw_name}, #{archive_type}, #{file_type}, #{file_name}, #{creation_datetime}, #{file_size}, #{file_location}, #{install_location}   
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="EdgeSWVO">
+		UPDATE edge_softwares
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="sw_group != null and sw_group != -1">sw_group = #{sw_group},</if>
+			<if test="sw_type != null and sw_type != -1">sw_type = #{sw_type},</if>
+			<if test="sw_manufacturer != null and sw_manufacturer != ''">sw_manufacturer = #{sw_manufacturer},</if>
+			<if test="package_id != null and package_id != ''">package_id = #{package_id},</if>
+			<if test="sw_id != null and sw_id != ''">sw_id = #{sw_id},</if>
+			<if test="sw_version != null and sw_version != ''">sw_version = #{sw_version},</if>
+			<if test="sw_name != null and sw_name != ''">sw_name = #{sw_name},</if>
+			<if test="archive_type != null and archive_type != -1">archive_type = #{archive_type},</if>
+			<if test="file_type != null and file_type != ''">file_type = #{file_type},</if>
+			<if test="file_name != null and file_name != ''">file_name = #{file_name},</if>
+			<if test="creation_datetime != null and creation_datetime != ''">creation_datetime = #{creation_datetime},</if>
+			<if test="file_size != null and file_size != -1">file_size = #{file_size},</if>
+			<if test="file_location != null and file_location != ''">file_location = #{file_location},</if>
+			<if test="install_location != null and install_location != ''">install_location = #{install_location},</if>
+		</trim>
+		WHERE
+			sw_serial = #{sw_serial}
+	</update>
+	
+	<delete id="delete" parameterType="EdgeSWVO">
+		DELETE FROM edge_softwares WHERE sw_serial = #{sw_serial}
+	</delete>
+	
+</mapper>
