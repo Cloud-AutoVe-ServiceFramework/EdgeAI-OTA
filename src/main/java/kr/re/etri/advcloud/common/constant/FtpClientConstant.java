@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 public class FtpClientConstant {
 
 	private String protocol;
-	private String host;
-	private Integer port;
-	private String username;
-	private String password;
+	private String ADVMhost;
+	private Integer ADVMport;
+	private String ADVMusername;
+	private String ADVMpassword;
 	private Integer keepAliveTimeout;
 	private String edgeSwPath;
 
@@ -31,59 +31,59 @@ public class FtpClientConstant {
 	}
 
 	/**
-	 * @return the host
+	 * @return the ADVM host
 	 */
-	public String getHost() {
-		return host;
+	public String getADVMHost() {
+		return ADVMhost;
 	}
 
 	/**
-	 * @param host the host to set
+	 * @param host the ADVM host to set
 	 */
-	public void setHost(String host) {
-		this.host = host;
+	public void setADVMHost(String host) {
+		this.ADVMhost = host;
 	}
 
 	/**
-	 * @return the port
+	 * @return the ADVM port
 	 */
-	public Integer getPort() {
-		return port;
+	public Integer getADVMPort() {
+		return ADVMport;
 	}
 
 	/**
-	 * @param port the port to set
+	 * @param port the ADVM port to set
 	 */
-	public void setPort(Integer port) {
-		this.port = port;
+	public void setADVMPort(Integer port) {
+		this.ADVMport = ADVMport;
 	}
 
 	/**
-	 * @return the username
+	 * @return the ADVM username
 	 */
-	public String getUsername() {
-		return username;
+	public String getADVMUsername() {
+		return ADVMusername;
 	}
 
 	/**
-	 * @param username the username to set
+	 * @param username the ADVM username to set
 	 */
-	public void setUsername(String username) {
-		this.username = username;
+	public void setADVMUsername(String username) {
+		this.ADVMusername = username;
 	}
 
 	/**
-	 * @return the password
+	 * @return the ADVM password
 	 */
-	public String getPassword() {
-		return password;
+	public String getADVMPassword() {
+		return ADVMpassword;
 	}
 
 	/**
-	 * @param password the password to set
+	 * @param password the ADVM password to set
 	 */
-	public void setPassword(String password) {
-		this.password = password;
+	public void setADVMPassword(String password) {
+		this.ADVMpassword = password;
 	}
 
 	/**
@@ -116,6 +116,8 @@ public class FtpClientConstant {
 	public void setEdgeSwPath(String edgeSwPath) {
 		this.edgeSwPath = edgeSwPath;
 	}
+
+
 
 
 }

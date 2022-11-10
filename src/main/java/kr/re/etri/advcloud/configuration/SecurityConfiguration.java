@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
 
-    // ì •ì  ìì›ì— ëŒ€í•´ì„œëŠ” Security ì„¤ì •ì„ ì ìš©í•˜ì§€ ì•ŠìŒ.
+    // Á¤Àû ÀÚ¿ø¿¡ ´ëÇØ¼­´Â Security ¼³Á¤À» Àû¿ëÇÏÁö ¾ÊÀ½.
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());

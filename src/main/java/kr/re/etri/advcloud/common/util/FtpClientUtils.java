@@ -40,10 +40,10 @@ public class FtpClientUtils {
 
 	private static void connect() {
 		try {
-			logger.debug(">>> ftpClientConstant.getHost(): {}", ftpClientConstant.getHost());
+			logger.debug(">>> ftpClientConstant.getHost(): {}", ftpClientConstant.getADVMHost());
 			
-			ftpClient.connect(ftpClientConstant.getHost(), ftpClientConstant.getPort());
-			ftpClient.login(ftpClientConstant.getUsername(), ftpClientConstant.getPassword());
+			ftpClient.connect(ftpClientConstant.getADVMHost(), ftpClientConstant.getADVMPort());
+			ftpClient.login(ftpClientConstant.getADVMUsername(), ftpClientConstant.getADVMPassword());
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 			ftpClient.enterLocalPassiveMode();
 			//ftpClient.setControlKeepAliveTimeout(config.getKeepAliveTimeout());
