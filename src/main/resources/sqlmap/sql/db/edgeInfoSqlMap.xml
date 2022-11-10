@@ -28,6 +28,7 @@
 				AND loc_longitude = #{loc_longitude}
 			</if>	
 		</where>
+		ORDER BY location_number DESC, edge_id DESC 
 	</select>
 	
 	<select id="select" parameterType="EdgeInfoVO" resultType="EdgeInfoVO">
