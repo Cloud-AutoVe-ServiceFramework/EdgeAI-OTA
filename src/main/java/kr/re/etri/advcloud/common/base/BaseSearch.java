@@ -4,7 +4,7 @@ package kr.re.etri.advcloud.common.base;
 public class BaseSearch extends BaseObject {
 	
 	protected int FIRST_PAGE = 1;
-	protected int PAGE_SIZE = 12;
+	protected int PAGE_SIZE = 10;
 
 	protected Integer pageNum;
 	protected Integer pageSize;
