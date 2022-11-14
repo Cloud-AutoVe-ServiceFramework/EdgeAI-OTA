@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.re.etri.advcloud.common.constant.FtpClientConstant;
-import kr.re.etri.advcloud.common.util.FtpClientUtils;
+import kr.re.etri.advcloud.common.constant.CommonConstant;
+import kr.re.etri.advcloud.common.util.FileUtil;
 import kr.re.etri.advcloud.common.util.HmacUtils;
 import kr.re.etri.advcloud.common.util.Utils;
 import kr.re.etri.advcloud.controller.ApiResponseMessage;
@@ -35,7 +35,7 @@ public class EdgeSWController extends CommonController {
 	EdgeSWService edgeSWService;
 	
 	@Autowired
-	FtpClientConstant ftpClientConstant;
+	CommonConstant commonConstant;
 	
 	@GetMapping("/search")
 	public ResponseEntity<?> search(EdgeSWVO param) {
@@ -67,7 +67,7 @@ public class EdgeSWController extends CommonController {
 
 			List<MultipartFile> files = param.getFiles();
 			for (int i = 0; i < files.size(); i++) {
-				Map<String, Object> fileUploadData = Utils.saveFile(ftpClientConstant.getEdgeSwPath(), files.get(i));
+				Map<String, Object> fileUploadData = Utils.saveFile(commonConstant.getBaseFilePath(), commonConstant.getEdgeSwPath(), files.get(i));
 
 				if (fileUploadData != null && !fileUploadData.isEmpty()) {
 					param.setFile_location((String) fileUploadData.get("file_location"));
@@ -81,8 +81,11 @@ public class EdgeSWController extends CommonController {
 						edgeSWService.insert(param);
 						response = responseSuccess();
 					} else {
-						// FTP 파일 삭제
-						FtpClientUtils.deleteFile(param.getFile_location());
+						// 파일 삭제
+            			try {
+            				FileUtil.delete(commonConstant.getBaseFilePath() + param.getFile_location());
+        				} catch (Exception e) {
+        				}
 
 						throw new Exception("동일한 데이터가 존재합니다.");
 					}
@@ -110,8 +113,7 @@ public class EdgeSWController extends CommonController {
 			if (param.getFiles() != null && param.getFiles().size() == 1) {
 				List<MultipartFile> files = param.getFiles();
 				for (int i = 0; i < files.size(); i++) {
-					Map<String, Object> fileUploadData = Utils.saveFile(ftpClientConstant.getEdgeSwPath(),
-							files.get(i));
+					Map<String, Object> fileUploadData = Utils.saveFile(commonConstant.getBaseFilePath(), commonConstant.getEdgeSwPath(), files.get(i));
 					if (fileUploadData != null && !fileUploadData.isEmpty()) {
 						param.setFile_location((String) fileUploadData.get("file_location"));
 						param.setFile_name((String) fileUploadData.get("file_name"));
@@ -123,14 +125,20 @@ public class EdgeSWController extends CommonController {
 						if (dupplicateData == null) {
 							EdgeSWVO oldData = edgeSWService.selectById(param.getSw_serial());
 
-							// FTP 파일 삭제
-							FtpClientUtils.deleteFile(oldData.getFile_location());
+							// 파일 삭제
+		        			try {
+		        				FileUtil.delete(commonConstant.getBaseFilePath() + oldData.getFile_location());
+		    				} catch (Exception e) {
+		    				}
 
 							edgeSWService.update(param);
 							response = responseSuccess();
 						} else {
-							// FTP 파일 삭제
-							FtpClientUtils.deleteFile(param.getFile_location());
+							// 파일 삭제
+		        			try {
+		        				FileUtil.delete(commonConstant.getBaseFilePath() + param.getFile_location());
+		    				} catch (Exception e) {
+		    				}
 
 							throw new Exception("동일한 데이터가 존재합니다.");
 						}
@@ -167,8 +175,11 @@ public class EdgeSWController extends CommonController {
 
 			EdgeSWVO oldData = edgeSWService.selectById(param.getSw_serial());
 			if (oldData != null) {
-				// FTP 파일 삭제
-				FtpClientUtils.deleteFile(oldData.getFile_location());
+				// 파일 삭제
+    			try {
+    				FileUtil.delete(commonConstant.getBaseFilePath() + oldData.getFile_location());
+				} catch (Exception e) {
+				}
 
 				edgeSWService.delete(param);
 			}
@@ -202,7 +213,9 @@ public class EdgeSWController extends CommonController {
 					String installLocationPath = data.getInstall_location();
 
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
-					FtpClientUtils.loadFile(filePath, os);
+					
+					// host server file load
+                    FileUtil.loadFile(commonConstant.getBaseFilePath() + filePath, os);
 
 					ZipEntry zipEntry = new ZipEntry(id + "/" + fileName);
 					zipEntry.setExtra(installLocationPath.getBytes("UTF-8"));
