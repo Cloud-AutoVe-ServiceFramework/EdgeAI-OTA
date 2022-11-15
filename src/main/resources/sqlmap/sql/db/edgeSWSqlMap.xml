@@ -36,6 +36,9 @@
 			<if test="file_name != null and file_name != ''">
 				AND file_name LIKE CONCAT('%',#{file_name},'%')
 			</if>
+			<if test="install_os != null and install_os != -1">
+				AND install_os LIKE CONCAT('%',#{install_os},'%')
+			</if>
 		</where>
 	</sql>
 	
@@ -58,7 +61,10 @@
 						DATE_FORMAT(creation_datetime,'%Y/%m/%d %H:%i:%s') as creation_datetime,
 						file_size,
 						install_location,
-						file_location
+						install_os,
+						(select c.codeval from code c where c.codegrp = 'install_os' AND  c.code = install_os) as install_os_name,
+						file_location,
+						user_id
 					FROM edge_softwares
 					<include refid="selection"></include>
 					ORDER BY sw_version DESC LIMIT 10000
@@ -81,7 +87,10 @@
 					DATE_FORMAT(creation_datetime,'%Y/%m/%d %H:%i:%s') as creation_datetime,
 					file_size,
 					install_location,
-					file_location
+					install_os,
+					(select c.codeval from code c where c.codegrp = 'install_os' AND  c.code = install_os) as install_os_name,
+					file_location,
+					user_id
 				FROM edge_softwares
 				<include refid="selection"></include>
 			</otherwise>	
@@ -93,7 +102,8 @@
 			sw_serial,
 			file_name,
 			file_location,
-			install_location
+			install_location,
+			install_os
 		FROM edge_softwares
 		<where>
 			<if test="sw_serial != null and sw_serial != -1">
@@ -132,6 +142,9 @@
 			<if test="sw_serial_list != null and sw_serial_list != ''">
 				AND sw_serial IN (${sw_serial_list})
 			</if>
+			<if test="install_os != null and install_os != -1">
+				AND install_os = #{install_os}
+			</if>
 		</where>
 	</select>
 	
@@ -159,11 +172,11 @@
 	<insert id="insert" parameterType="EdgeSWVO">
 		INSERT INTO edge_softwares
 		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
-			sw_group, sw_type, sw_manufacturer, package_id, sw_id, sw_version, sw_name, archive_type, file_type, file_name, creation_datetime, file_size, file_location, install_location
+			sw_group, sw_type, sw_manufacturer, package_id, sw_id, sw_version, sw_name, archive_type, file_type, file_name, creation_datetime, file_size, file_location, install_location, install_os, user_id
 		</trim>
 		VALUES
 		<trim prefix="(" prefixOverrides="" suffix=")" suffixOverrides=",">
-			#{sw_group}, #{sw_type}, #{sw_manufacturer}, #{package_id}, #{sw_id}, #{sw_version}, #{sw_name}, #{archive_type}, #{file_type}, #{file_name}, #{creation_datetime}, #{file_size}, #{file_location}, #{install_location}   
+			#{sw_group}, #{sw_type}, #{sw_manufacturer}, #{package_id}, #{sw_id}, #{sw_version}, #{sw_name}, #{archive_type}, #{file_type}, #{file_name}, #{creation_datetime}, #{file_size}, #{file_location}, #{install_location}, #{install_os}, #{user_id}  
 		</trim>
 	</insert>
 	
@@ -184,6 +197,7 @@
 			<if test="file_size != null and file_size != -1">file_size = #{file_size},</if>
 			<if test="file_location != null and file_location != ''">file_location = #{file_location},</if>
 			<if test="install_location != null and install_location != ''">install_location = #{install_location},</if>
+			<if test="install_os != null and install_os != -1">install_os = #{install_os},</if>
 		</trim>
 		WHERE
 			sw_serial = #{sw_serial}

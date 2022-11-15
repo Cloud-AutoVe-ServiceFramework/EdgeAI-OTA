@@ -1,10 +1,19 @@
+#-----------------------------------------------------------------------
+#
+#   applicaton-common : Default Common Configuation
+#   kubernetes PV(Persistent Volume) : /DATA 
+#   
+#-----------------------------------------------------------------------
+
 spring:
   config:
     activate:
       on-profile: local
 
 props:
-
+  common:
+    baseFilePath: /Users/rurony/DATA/
+    edgeSwPath: files/edge_sw
   
 ---
  
@@ -14,7 +23,9 @@ spring:
       on-profile: dev
 
 props:
-
+  common:
+    baseFilePath: /DATA/
+    edgeSwPath: files/edge_sw
  
 ---
  
@@ -24,4 +35,6 @@ spring:
       on-profile: prod
 
 props:
-
+  common:
+    baseFilePath: /DATA/
+    edgeSwPath: files/edge_sw
