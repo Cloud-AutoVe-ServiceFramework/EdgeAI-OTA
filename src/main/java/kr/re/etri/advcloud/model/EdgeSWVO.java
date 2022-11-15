@@ -27,6 +27,8 @@ public class EdgeSWVO extends BaseObject {
 	private long file_size = -1;
 	private String file_location;
 	private String install_location;
+	private int install_os = -1;
+	private String install_os_name;
 	private List<MultipartFile> files;
 	private boolean newest_version = false;
 	private String sw_serial_list;
@@ -256,6 +258,34 @@ public class EdgeSWVO extends BaseObject {
 	 */
 	public void setInstall_location(String install_location) {
 		this.install_location = install_location;
+	}
+	
+	/**
+	 * @return the install_os
+	 */
+	public int getInstall_os() {
+		return install_os;
+	}
+
+	/**
+	 * @param install_os the install_os to set
+	 */
+	public void setInstall_os(int install_os) {
+		this.install_os = install_os;
+	}
+
+	/**
+	 * @return the install_os_name
+	 */
+	public String getInstall_os_name() {
+		return install_os_name;
+	}
+
+	/**
+	 * @param install_os_name the install_os_name to set
+	 */
+	public void setInstall_os_name(String install_os_name) {
+		this.install_os_name = install_os_name;
 	}
 
 	/**
