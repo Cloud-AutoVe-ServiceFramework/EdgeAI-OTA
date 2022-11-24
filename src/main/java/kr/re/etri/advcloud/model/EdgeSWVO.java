@@ -1,5 +1,6 @@
 package kr.re.etri.advcloud.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -137,7 +138,7 @@ public class EdgeSWVO extends BaseObject {
 	/**
 	 * @return the sw_id
 	 */
-	public String getSw_id() {
+	public String getSw_id() { 
 		return sw_id;
 	}
 
@@ -292,14 +293,24 @@ public class EdgeSWVO extends BaseObject {
 	 * @return the files
 	 */
 	public List<MultipartFile> getFiles() {
-		return files;
+		// 
+		if (this.files != null) {
+			List<MultipartFile> copyFiles = new ArrayList<MultipartFile>(this.files);
+			
+			return copyFiles;
+		} else {
+			return null;
+		}
 	}
 
 	/**
 	 * @param files the files to set
 	 */
 	public void setFiles(List<MultipartFile> files) {
-		this.files = files;
+		// 
+		List<MultipartFile> copyFiles = new ArrayList<MultipartFile>(files);
+		
+		this.files = copyFiles;
 	}
 
 	/**
