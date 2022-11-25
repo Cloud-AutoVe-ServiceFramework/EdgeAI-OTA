@@ -1,5 +1,7 @@
 package kr.re.etri.advcloud.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,8 @@ import kr.re.etri.advcloud.common.jwt.service.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	private static final Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
 	
 	private static final String[] AUTH_WHITELIST = {
 		"/resources/**",
@@ -43,14 +47,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UnauthorizedAuthenticationEntryPoint unauthorizedAuthenticationEntryPoint;
     
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
-        auth.userDetailsService(customUserDetailsService);
+    protected void configure(AuthenticationManagerBuilder auth) {
+    	// 
+    	try {
+        	super.configure(auth);
+            auth.userDetailsService(customUserDetailsService);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
     }
 
     @Override
-    public void configure(HttpSecurity security) throws Exception {
-    	security.cors().and()
+    public void configure(HttpSecurity security) {
+    	// 
+    	try {
+    		security.cors().and()
 	        .httpBasic().disable()
 	        .formLogin().disable()
 	        .csrf().disable()
@@ -68,6 +79,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         security.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
     }
 
     @Bean
@@ -77,7 +91,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     @Bean
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    protected AuthenticationManager authenticationManager() {
+    	// 
+    	try {
+			return super.authenticationManager();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		}
     }
+    
 }
