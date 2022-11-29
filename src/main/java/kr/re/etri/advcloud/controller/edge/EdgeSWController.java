@@ -1,6 +1,7 @@
 package kr.re.etri.advcloud.controller.edge;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -84,7 +85,8 @@ public class EdgeSWController extends CommonController {
 						// 파일 삭제
             			try {
             				FileUtil.delete(commonConstant.getBaseFilePath() + param.getFile_location());
-        				} catch (Exception e) {
+        				} catch (IOException e) {
+        					logger.error(e.getMessage(), e);
         				}
 
 						throw new Exception("동일한 데이터가 존재합니다.");
@@ -128,7 +130,8 @@ public class EdgeSWController extends CommonController {
 							// 파일 삭제
 		        			try {
 		        				FileUtil.delete(commonConstant.getBaseFilePath() + oldData.getFile_location());
-		    				} catch (Exception e) {
+		    				} catch (IOException e) {
+		    					logger.error(e.getMessage(), e);
 		    				}
 
 							edgeSWService.update(param);
@@ -137,7 +140,8 @@ public class EdgeSWController extends CommonController {
 							// 파일 삭제
 		        			try {
 		        				FileUtil.delete(commonConstant.getBaseFilePath() + param.getFile_location());
-		    				} catch (Exception e) {
+		    				} catch (IOException e) {
+		    					logger.error(e.getMessage(), e);
 		    				}
 
 							throw new Exception("동일한 데이터가 존재합니다.");
@@ -178,7 +182,8 @@ public class EdgeSWController extends CommonController {
 				// 파일 삭제
     			try {
     				FileUtil.delete(commonConstant.getBaseFilePath() + oldData.getFile_location());
-				} catch (Exception e) {
+				} catch (IOException e) {
+					logger.error(e.getMessage(), e);
 				}
 
 				edgeSWService.delete(param);
@@ -202,6 +207,8 @@ public class EdgeSWController extends CommonController {
 			}
 
 			List<EdgeSWVO> list = edgeSWService.selectDownloadList(param);
+			logger.debug(">>>>>>>>>>>>>>> EdgeSWController download list size: " + list.size());
+			
 			if (list != null && list.size() > 0) {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ZipOutputStream zipOut = new ZipOutputStream(baos);
