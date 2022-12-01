@@ -8,9 +8,12 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DateTimeUtil {
 
-	// private static final Logger logger = LoggerFactory.getLogger(DateTimeUtil.class);
+	private static final Logger logger = LoggerFactory.getLogger(DateTimeUtil.class);
 
 	private static TimeZone timeZone = TimeZone.getDefault();
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
@@ -56,19 +59,19 @@ public class DateTimeUtil {
 		Date date = calendar.getTime();
 		SimpleDateFormat sf = new SimpleDateFormat(format, Locale.ENGLISH);
 
-		try {
-			if (!"".equals(strDate)) {
-				date = sf.parse(strDate);
-				calendar.setTime(date);
+			try {
+				if (!"".equals(strDate)) {
+					date = sf.parse(strDate);
+					calendar.setTime(date);
+				}
+
+				calendar.add(Calendar.MINUTE, amount);
+
+				date = calendar.getTime();
+				strDate = sf.format(date);
+			} catch (ParseException e) {
+				logger.error(e.getMessage(), e); // 
 			}
-
-			calendar.add(Calendar.MINUTE, amount);
-
-			date = calendar.getTime();
-			strDate = sf.format(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 
 		return strDate;
 	}
@@ -84,7 +87,7 @@ public class DateTimeUtil {
 
 			time = calendar.getTime().getTime();
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e); // 
 		}
 
 		return time;
