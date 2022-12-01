@@ -61,13 +61,25 @@ public class FtpClientUtils {
 		}
 	}
 	
+	// 
+	@SuppressWarnings("hiding")
 	public static boolean saveFile(File file, String workingDirectory, String fileName) {
+		InputStream targetStream = null;
 		try {
-			InputStream targetStream = new FileInputStream(file);
+			targetStream = new FileInputStream(file);
 			return saveFile(targetStream, workingDirectory, fileName);
 		} catch (FileNotFoundException e) {
 			logger.error(e.getMessage(), e);
 			return false;
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		} finally {
+			try {
+				targetStream.close();
+			} catch (IOException e) {
+				logger.error(e.getMessage(), e);
+			}
 		}
 	}
 	
