@@ -1,10 +1,12 @@
 package kr.re.etri.advcloud.configuration;
 
-import javax.sql.DataSource;
+import javax.sql.DataSource; 
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -20,7 +22,9 @@ import kr.re.etri.advcloud.common.annotation.Mapper;
 @Configuration
 @EnableTransactionManagement
 public class DatasourceConfiguration extends AbstractDatasourceConfiguration {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(DatasourceConfiguration.class);
+	
 	@Primary
 	@Bean(name="dataSource")
 	@ConfigurationProperties(prefix = "spring.datasource.hikari")
@@ -40,16 +44,21 @@ public class DatasourceConfiguration extends AbstractDatasourceConfiguration {
 	
 	@Primary
 	@Bean(name="sqlSessionFactory")
-	public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource, ApplicationContext applicationContext)
-			throws Exception {
-		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:sqlmap/config/mybatisConfig.xml"));
-		sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:sqlmap/sql/db/**/*.xml"));
-		sqlSessionFactoryBean.setTypeAliases(findModel());
-//		sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
-		
-		return sqlSessionFactoryBean.getObject();
+	public SqlSessionFactory sqlSessionFactory(@Qualifier("dataSource") DataSource dataSource, ApplicationContext applicationContext) {
+		// 
+		try {
+			SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+			sqlSessionFactoryBean.setDataSource(dataSource);
+			sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:sqlmap/config/mybatisConfig.xml"));
+			sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:sqlmap/sql/db/**/*.xml"));
+			sqlSessionFactoryBean.setTypeAliases(findModel());
+			//sqlSessionFactoryBean.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+			
+			return sqlSessionFactoryBean.getObject();
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return null;
+		}
 	}
 
 	@Primary
