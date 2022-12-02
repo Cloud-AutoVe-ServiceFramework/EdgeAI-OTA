@@ -17,9 +17,9 @@ public class Utils {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Utils.class);
 	
-    //private final static long KB_FACTOR = 1024;
-    //private final static long MB_FACTOR = 1024 * KB_FACTOR;
-    //private final static long GB_FACTOR = 1024 * MB_FACTOR;
+	private final static long KB_FACTOR = 1024;
+    private final static long MB_FACTOR = 1024 * KB_FACTOR;
+    private final static long GB_FACTOR = 10 * 1024 * MB_FACTOR;	// 10 GB
 
     public static Map<String, Object> saveFileByFtp(String uploadFolderPath, MultipartFile multipartFile) throws Exception {
         Map<String, Object> fileUploadData = null;
@@ -28,9 +28,9 @@ public class Utils {
         if (multipartFile != null) {
             long size = multipartFile.getSize();
 
-//			if (size > GB_FACTOR) {
-//				new Exception("파일 사이즈가 최대 저장 사이즈보다 큽니다.");
-//			}
+			if (size > GB_FACTOR) {
+				new Exception("파일 사이즈가 최대 저장 사이즈보다 큽니다.");
+			}
 
             String orgFileName = multipartFile.getOriginalFilename();
             if (orgFileName != null) {
@@ -78,9 +78,9 @@ public class Utils {
         if (multipartFile != null) {
             long size = multipartFile.getSize();
 
-//			if (size > GB_FACTOR) {
-//				new Exception("파일 사이즈가 최대 저장 사이즈보다 큽니다.");
-//			}
+			if (size > GB_FACTOR) {
+				new Exception("파일 사이즈가 최대 저장 사이즈보다 큽니다.");
+			}
 
             String orgFileName = multipartFile.getOriginalFilename();
             if (orgFileName != null) {
