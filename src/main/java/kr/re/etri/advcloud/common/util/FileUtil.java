@@ -16,14 +16,18 @@ import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 	
 	public static boolean createDir(String dirPath) {
 		try {
 			return new File(dirPath).mkdirs();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 
 		return false;
@@ -85,6 +89,7 @@ public class FileUtil {
 			try {
 				inputStrean.close();
 			} catch (IOException e) {
+				logger.error(e.getMessage(), e);
 			}
 		}
 	}
@@ -93,7 +98,7 @@ public class FileUtil {
 		try {
 			return new File(filePath).exists();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 
 		return false;
@@ -141,7 +146,7 @@ public class FileUtil {
 				return 0;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 		}
 
 		return 0;
@@ -164,7 +169,7 @@ public class FileUtil {
 				result.put("newFileName", newFileName);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(), e);
 			throw e;
 		}
 		
