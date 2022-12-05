@@ -20,30 +20,20 @@ public class FtpClientUtils {
 	
 	private static FTPClient ftpClient = null;
 	
-	private static FtpClientConstant ftpClientConstant;
+	protected static FtpClientConstant ftpClientConstant;
 	
 	public static void open(FtpClientConstant ftpClientConstant) {
 		FtpClientUtils.ftpClientConstant = ftpClientConstant;
 		ftpClient = new FTPClient();
 	}
 	
-//	public static void close() {
-//		if (ftpClient != null) {
-//			try {
-//				ftpClient.logout();
-//				ftpClient.disconnect();
-//			} catch (Exception e) {
-//				log.error(e.getMessage(), e);
-//			}
-//		}
-//	}
-
 	private static void connect() {
 		try {
-			logger.debug(">>> ftpClientConstant.getHost(): {}", ftpClientConstant.getADVMHost());
-			
-			ftpClient.connect(ftpClientConstant.getADVMHost(), ftpClientConstant.getADVMPort());
-			ftpClient.login(ftpClientConstant.getADVMUsername(), ftpClientConstant.getADVMPassword());
+			// XXX: 
+//			logger.debug(">>> ftpClientConstant.getHost(): {}", ftpClientConstant.getHost());
+//			
+//			ftpClient.connect(ftpClientConstant.getHost(), ftpClientConstant.getPort());
+//			ftpClient.login(ftpClientConstant.getUsername(), ftpClientConstant.getPassword());
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 			ftpClient.enterLocalPassiveMode();
 			//ftpClient.setControlKeepAliveTimeout(config.getKeepAliveTimeout());
@@ -61,7 +51,7 @@ public class FtpClientUtils {
 		}
 	}
 	
-	// 
+	// XXX: 
 	@SuppressWarnings("hiding")
 	public static boolean saveFile(File file, String workingDirectory, String fileName) {
 		InputStream targetStream = null;
