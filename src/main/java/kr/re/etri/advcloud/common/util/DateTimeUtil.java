@@ -17,7 +17,9 @@ public class DateTimeUtil {
 
 	private static TimeZone timeZone = TimeZone.getDefault();
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-
+	
+	private static final Object syncLock = new Object();
+	
 	/**
 	 * convert to local time to utc time UTC = UTC - 9 hour
 	 * 
@@ -39,11 +41,15 @@ public class DateTimeUtil {
 	}
 
 	public static String getDateTimeFormatString(long dateTime) {
-		return simpleDateFormat.format(dateTime);
+		synchronized (syncLock) {
+			return simpleDateFormat.format(dateTime);
+		}
 	}
 
 	public static String getDateTimeFormatString(Date dateTime) {
-		return simpleDateFormat.format(dateTime);
+		synchronized (syncLock) {
+			return simpleDateFormat.format(dateTime);
+		}
 	}
 
 	/**
@@ -55,9 +61,10 @@ public class DateTimeUtil {
 	 * @return
 	 */
 	public static String getDateTimeFormatString(String strDate, int amount, String format) {
-		Calendar calendar = Calendar.getInstance();
-		Date date = calendar.getTime();
-		SimpleDateFormat sf = new SimpleDateFormat(format, Locale.ENGLISH);
+		synchronized (syncLock) {
+			Calendar calendar = Calendar.getInstance();
+			Date date = calendar.getTime();
+			SimpleDateFormat sf = new SimpleDateFormat(format, Locale.ENGLISH);
 
 			try {
 				if (!"".equals(strDate)) {
@@ -70,10 +77,11 @@ public class DateTimeUtil {
 				date = calendar.getTime();
 				strDate = sf.format(date);
 			} catch (ParseException e) {
-				logger.error(e.getMessage(), e); // 
+				logger.error(e.getMessage(), e); //
 			}
 
-		return strDate;
+			return strDate;
+		}
 	}
 
 	public static long getDateTimeToLong(String strDate, String format) {
