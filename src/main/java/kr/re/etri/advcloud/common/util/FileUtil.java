@@ -3,6 +3,7 @@ package kr.re.etri.advcloud.common.util;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,8 +63,10 @@ public class FileUtil {
 			bos.flush();
 
 			return saveFile;
-		} catch (Exception ex) {
-			throw ex;
+		} catch (FileNotFoundException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
 		} finally {
 			if (stream != null)
 				stream.close();
@@ -83,7 +86,11 @@ public class FileUtil {
 				outputStream.write(outByte, 0, 8192);
 			}
 			return true;
-		} catch (Exception e) {
+		} catch (FileNotFoundException e) {
+			logger.error(e.getMessage(), e);
+			return false;
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
 			return false;
 		} finally {
 			try {
@@ -152,7 +159,7 @@ public class FileUtil {
 		return 0;
 	}
 
-	// 파일복사
+	// 파일복사 
 	public static Map<String, Object> copyToFile(String basePath, String dirPath, String filePath, String fileName) throws Exception {
 		Map<String, Object> result = null;
 		try{
