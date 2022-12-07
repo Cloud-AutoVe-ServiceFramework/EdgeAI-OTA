@@ -9,6 +9,7 @@ import org.apache.commons.net.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -22,10 +23,11 @@ public class HmacUtils {
 	private static String algorithm = "HmacSHA256";
 
 	public static String Hmac(String key, String message)
-			throws NoSuchAlgorithmException, InvalidKeyException {
+			throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException {
 		try {
 			Mac hasher = Mac.getInstance(algorithm);
 			hasher.init(new SecretKeySpec(key.getBytes("utf-8"), algorithm));
+
 			byte[] hash = hasher.doFinal(message.getBytes());
 
 			return Base64.encodeBase64String(hash);
@@ -35,7 +37,10 @@ public class HmacUtils {
 		} catch (InvalidKeyException e) {
 			logger.error(e.getMessage(), e);
 			throw e;
-		} 
+		} catch (UnsupportedEncodingException e) {
+			logger.error(e.getMessage(), e);
+			throw e;
+		}
 	}
 
 }
