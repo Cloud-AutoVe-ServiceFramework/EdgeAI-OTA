@@ -34,15 +34,15 @@ public class FileUtil {
 		return false;
 	}
 
-	public static File createFile(InputStream stream, String filePath) throws Exception {
+	public static File createFile(InputStream stream, String filePath) throws FileNotFoundException, IOException {
 		BufferedOutputStream bos = null;
 
 		try {
 			File saveFile = new File(filePath);
 
-			if (saveFile.isDirectory()) {
-				throw new Exception("파일 경로가 올바르지 않습니다.");
-			}
+//			if (saveFile.isDirectory()) { 
+//				throw new Exception("파일 경로가 올바르지 않습니다.");
+//			}
 
 			if (!saveFile.getParentFile().exists()) {
 				saveFile.getParentFile().mkdirs();
