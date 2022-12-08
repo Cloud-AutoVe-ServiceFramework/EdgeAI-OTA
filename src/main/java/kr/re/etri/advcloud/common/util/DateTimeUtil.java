@@ -40,13 +40,13 @@ public class DateTimeUtil {
 		return uTCDateTime + timeZone.getOffset(uTCDateTime);
 	}
 
-	public static String getDateTimeFormatString(long dateTime) {
+	public static synchronized String getDateTimeFormatString(long dateTime) {
 		synchronized (syncLock) {
 			return simpleDateFormat.format(dateTime);
 		}
 	}
 
-	public static String getDateTimeFormatString(Date dateTime) {
+	public static synchronized String getDateTimeFormatString(Date dateTime) {
 		synchronized (syncLock) {
 			return simpleDateFormat.format(dateTime);
 		}
@@ -60,7 +60,7 @@ public class DateTimeUtil {
 	 * @param format  (ex. yyyy-MM-dd hh:mm:ss)
 	 * @return
 	 */
-	public static String getDateTimeFormatString(String strDate, int amount, String format) {
+	public static synchronized String getDateTimeFormatString(String strDate, int amount, String format) {
 		synchronized (syncLock) {
 			Calendar calendar = Calendar.getInstance();
 			Date date = calendar.getTime();
@@ -77,7 +77,7 @@ public class DateTimeUtil {
 				date = calendar.getTime();
 				strDate = sf.format(date);
 			} catch (ParseException e) {
-				logger.error(e.getMessage(), e); //
+				logger.error(e.getMessage(), e); // 
 			}
 
 			return strDate;
