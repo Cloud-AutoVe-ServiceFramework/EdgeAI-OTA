@@ -75,7 +75,7 @@ public class EdgeSWController extends CommonController {
 					param.setFile_name((String) fileUploadData.get("file_name"));
 					param.setFile_type((String) fileUploadData.get("file_type"));
 					param.setFile_size((long) fileUploadData.get("file_size"));
-					param.setCreation_datetime(Utils.convertGMTDateFormat(param.getCreation_datetime()));
+					param.setCreation_datetime(Utils.convertDateTimeFormatString(param.getCreation_datetime()));	// XXX: 오픈소스 라이선스 검증 변경, 2022-10-11
 
 					EdgeSWVO dupplicateData = edgeSWService.selectDuplicateRow(param);
 					if (dupplicateData == null) {
@@ -121,7 +121,7 @@ public class EdgeSWController extends CommonController {
 						param.setFile_name((String) fileUploadData.get("file_name"));
 						param.setFile_type((String) fileUploadData.get("file_type"));
 						param.setFile_size((long) fileUploadData.get("file_size"));
-						param.setCreation_datetime(Utils.convertGMTDateFormat(param.getCreation_datetime()));
+						param.setCreation_datetime(Utils.convertDateTimeFormatString(param.getCreation_datetime()));	// XXX: 오픈소스 라이선스 검증 변경, 2022-10-11
 
 						EdgeSWVO dupplicateData = edgeSWService.selectDuplicateRow(param);
 						if (dupplicateData == null) {
