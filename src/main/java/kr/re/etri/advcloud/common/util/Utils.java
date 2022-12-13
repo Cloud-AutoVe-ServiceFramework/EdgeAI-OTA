@@ -1,5 +1,6 @@
 package kr.re.etri.advcloud.common.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +18,7 @@ public class Utils {
 	
 	private static final Logger logger = LoggerFactory.getLogger(Utils.class);
 	
-    private final static long KB_FACTOR = 1024;
+	private final static long KB_FACTOR = 1024;
     private final static long MB_FACTOR = 1024 * KB_FACTOR;
     private final static long GB_FACTOR = 10 * 1024 * MB_FACTOR;	// 10 GB
 
@@ -53,7 +54,7 @@ public class Utils {
                     try {
                         fis = multipartFile.getInputStream();
                         FtpClientUtils.saveFile(fis, uploadFolderPath, uniqueFileName);
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         throw e;
                     } finally {
                         try {
@@ -107,7 +108,7 @@ public class Utils {
                         logger.debug(">>> save file path: {}", filePath);
                         
                         FileUtil.createFile(fis, filePath);
-                    } catch (Exception e) {
+                    } catch (IOException e) {
                         throw e;
                     } finally {
                         try {
