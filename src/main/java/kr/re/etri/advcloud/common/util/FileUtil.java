@@ -40,7 +40,7 @@ public class FileUtil {
 		try {
 			File saveFile = new File(filePath);
 
-//			if (saveFile.isDirectory()) { 
+//			if (saveFile.isDirectory()) {
 //				throw new Exception("파일 경로가 올바르지 않습니다.");
 //			}
 
@@ -80,10 +80,10 @@ public class FileUtil {
 		try {
 			File file = new File(filePath);
             inputStrean = new FileInputStream(file);
-			
+            int len = 0;
 			byte[] outByte = new byte[8192];
-			while (inputStrean.read(outByte, 0, 8192) != -1) {
-				outputStream.write(outByte, 0, 8192);
+			while ((len = inputStrean.read(outByte, 0, 8192)) != -1) {
+				outputStream.write(outByte, 0, len);
 			}
 			return true;
 		} catch (FileNotFoundException e) {
@@ -159,7 +159,7 @@ public class FileUtil {
 		return 0;
 	}
 
-	// 파일복사 
+	// 파일복사
 	public static Map<String, Object> copyToFile(String basePath, String dirPath, String filePath, String fileName) throws Exception {
 		Map<String, Object> result = null;
 		try{
